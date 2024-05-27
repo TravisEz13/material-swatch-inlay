@@ -16,19 +16,36 @@ Steps = true;
 /* [Text parameters] */
 text_lstart = 2.5; //[0:0.1:12]
 
-// See Font List dialog
+// See Help -> Font List to see if these are available
+string_default_font = "Gill Sans:style=Bold"; // ["Gill Sans:style=Bold","Liberation Mono:style=Bold"]
+
+// Overide the default font, See Help -> Font List for list
+string1_font = ""; //
 string1_origin = 18; //[15:1:20]
 string1_size = 5; //[1:1:10]
+
+// See Help -> Font List to see if these are available
+string2_font = "";
 string2_origin = 10.7; //[1:0.1:12]
 string2_size = 4; //[1:1:10]
-string3_font = "Liberation Mono:style=Bold";
+
+// See Help -> Font List to see if these are available
+string3_font = "";
 string3_origin = 5.6; //[1:0.1:12]
 string3_size = 4; //[1:1:10]
+
+// See Help -> Font List to see if these are available
+string4_font = "";
 string4_origin = 1.2; //[1:0.1:12]
 string4_size = 4; //[1:1:10]
 module __end_customizer_options__() { }
 
 // Constants //
+
+effective_string1_font = string1_font ? string1_font : string_default_font;
+effective_string2_font = string2_font ? string2_font : string_default_font;
+effictive_string3_font = string3_font ? string3_font : string_default_font;
+effictive_string4_font = string4_font ? string4_font : string_default_font;
 
 $fa = $preview ? $fa : 2;
 $fs = $preview ? $fs : 0.4;
@@ -68,38 +85,38 @@ module main_swatch() {
                     // name plate portion
                     linear_extrude(height=height_thin)
                         rounded_square(size, size, corner_radius);
-                    
+
             }
-        }       
+        }
 }
 
 module swatch_text(height) {
                 translate([text_lstart, string1_origin, height_thick_inlay])
                   linear_extrude(height=height)
-                    text(string1, font=string1_font, size=string1_size, spacing=0.95);
+                    text(string1, font=effictive_string1_font, size=string1_size, spacing=0.95);
 
                 translate([text_lstart, string2_origin, height_inlay])
                   linear_extrude(height=height)
-                    text(string2, font=string2_font, size=string2_size, spacing=0.95);
-                    
+                    text(string2, font=effictive_string2_font, size=string2_size, spacing=0.95);
+
                 translate([text_lstart, string3_origin, height_inlay])
                   linear_extrude(height=height)
-                    text(string3, font=string3_font, size=string3_size, spacing=0.95);
+                    text(string3, font=effictive_string3_font, size=string3_size, spacing=0.95);
 
                 translate([text_lstart, string4_origin, height_inlay])
                   linear_extrude(height=height)
-                    text(string4, font=string4_font, size=string4_size, spacing=0.95);
+                    text(string4, font=effictive_string4_font, size=string4_size, spacing=0.95);
 }
 
 module main() {
     union() {
         color(Color)
             difference() {
-                    main_swatch();
+                main_swatch();
 
                 // cut out text
                 swatch_text(height_thin);
-                    
+
                 if (Steps) {
                     for (i = [1:1:step_count]) {
                         xoff = size - step_width * i;
